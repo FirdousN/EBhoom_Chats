@@ -36,9 +36,14 @@ module.exports = {
                 const userId = response.userExist._id;
                 const username = response.userExist.username;
 
+                // Generate Token
                 const Token = await userHelper.createToken(userId.toString(), username);
-                console.log(Token);
-                res.json({message:"user successfully loggedIn",status:true,userData,Token});
+                console.log("⭐Token in auth.controller login::",Token);
+
+                // Send token with cookie or response
+                res.cookie("jwt", Token, { httpOnly: true, secure: process.env.NODE_ENV === "production" });
+
+                res.json({message:"user successfully loggedIn",status:true, userData, Token});
             } else {
                 res.json({status:false,message:"user not registered!"})
             }

@@ -6,6 +6,7 @@ dotenv.config();
 // const jwt_token = process.env.SECRET_KEY 
 
 const jwt_token = process.env.JWT_SECRET || "default-secret-key";
+
 function authenticateToken(req, res, next) {
   const token = req.header("Authorization");
 

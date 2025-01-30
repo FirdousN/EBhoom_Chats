@@ -16,3 +16,4 @@ router.get("/:id",authenticateToken.authenticateToken, getMessages);
 router.post("/send/:id",authenticateToken.authenticateToken,sendMessage);       
 
 module.exports = router;
+

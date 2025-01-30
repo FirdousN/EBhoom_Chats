@@ -9,7 +9,12 @@ module.exports = {
         console.log("⭐getUserForSidebar:", req.params);
 
         try {
+            if (!req.user || !req.user.userId) {
+                return res.status(401).json({ message: "Unauthorized: No user ID found" });
+            }
             const loggedInUserId = req.user.userId;
+            // 
+            console.log('00000loggedInUserId000000',loggedInUserId);
             
             const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
 

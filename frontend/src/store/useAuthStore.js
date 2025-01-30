@@ -4,6 +4,7 @@ import { axiosInstance } from "../lib/axios.js";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
+// import { response } from "../../../backend_/app.js";
 
 const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5000" : "/";
 
@@ -57,26 +58,69 @@ export const useAuthStore = create((set, get) => ({
   },
 
   // Login function
+  // login: async (data) => {
+  //   set({ isLoggingIn: true });
+  //   try {
+  //     console.log("⭐ Logging in with data:", data);
+  //   //  Axios login api
+  //     const res = await axiosInstance.post("/users/login", data);
+  //     console.log('⭐000000000000res:',res);
+      
+  //     if (res.data.status) {
+  //       // Store JWT token in localStorage
+  //       localStorage.setItem('token', res.data.Token);
+
+  //     } else {
+  //       setErrorMessage('Invalid credentials. Please try again.');
+  //     }
+  //   } catch (error) {
+  //     setErrorMessage('An error occurred. Please try again later.');
+  //     console.error(error);
+  //   }
+  //    // Redirect to dashboard or home page
+  //     const token = res.data.Token; // Extract token
+
+  //     Cookies.set("token", token, { expires: 7, secure: true }); // Store token in cookies
+
+  //     set({ authUser: res.data });
+  //     toast.success("Logged in successfully");
+  //     get().connectSocket();
+
+  //   } catch (error) {
+
+  //     toast.error(error.r?.data?.message || "Login failed");
+
+  //   } finally {
+  //     set({ isLoggingIn: false });
+  //   }
+  // },
+
+  // login function
   login: async (data) => {
     set({ isLoggingIn: true });
     try {
       console.log("⭐ Logging in with data:", data);
-      const res = await axiosInstance.post("/users/login", data);
-      console.log('000000000000res:',res);
+      const res = await axiosInstance.post("/users/login", data); // Use 'res' here
       
+      if (res.data.status) {
+        localStorage.setItem("token", res.data.Token); // Store JWT token
+      } else {
+        setErrorMessage('Invalid credentials. Please try again.');
+      }
+  
       const token = res.data.Token; // Extract token
       Cookies.set("token", token, { expires: 7, secure: true }); // Store token in cookies
-
       set({ authUser: res.data });
       toast.success("Logged in successfully");
-
       get().connectSocket();
     } catch (error) {
+      setErrorMessage('An error occurred. Please try again later.');
+      console.error(error);
       toast.error(error.response?.data?.message || "Login failed");
     } finally {
       set({ isLoggingIn: false });
     }
-  },
+  },  
 
   // Logout function
   logout: async () => {

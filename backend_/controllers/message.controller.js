@@ -1,7 +1,7 @@
 const User = require("../model/userModel.js");
 const Message = require("../model/messageModel.js");
 const cloudinary = require("../lib/cloudinary.js");
-const { getReceiverSocketId } = require ("../lib/socket")
+// const { getReceiverSocketId, io } = require ("../lib/socket")
 
 // Export the controller functions
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
     },
 
     getMessages: async (req, res) => {
-        console.log('⭐getMessages: req.params', req.params);
+        console.log('⭐getMessages: req.params', req);
         try {
 
             const { id: userToChatId } = req.params;
@@ -73,11 +73,13 @@ module.exports = {
             console.log('⭐Message Save Db success fully');
             
             // realtime functionality goes here => socket.io
-
-            const receiverSocketId = getReceiverSocketId(receiverId);
-            if (receiverSocketId) {
-                io.to(receiverSocketId).emit("newMessage", newMessage);
-            }
+            console.log('00----reserverId-----000');
+            console.log(receiverId);
+            
+            // const receiverSocketId = getReceiverSocketId(receiverId);
+            // if (receiverSocketId) {
+            //     io.to(receiverSocketId).emit("newMessage", newMessage);
+            // }
 
             res.status(201).json(newMessage);
         } catch (error) {

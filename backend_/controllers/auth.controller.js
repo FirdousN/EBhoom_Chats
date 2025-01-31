@@ -127,14 +127,16 @@ module.exports = {
           }
     },
     
+    // code not implement Yet;;
     protectRoute: async (req,res) => {
       try {
         
       } catch (error) {
         
       }
-    }
-    ,
+    } ,//
+    
+    // EditProfile is Pending
       editProfile: async (req, res) => {
         try {
             console.log(req.params.id, "id");
@@ -173,6 +175,7 @@ module.exports = {
         }
     },
 
+    //have some doubt in this code Pending to use
      addProfilePic : async (req, res) => {
         try {
             console.log(req.file,"hiiiiiiiiiiiiiiii")
@@ -191,14 +194,16 @@ module.exports = {
         }
       },
     
+      // CheckAuth
       checkAuth : (req, res) => {
         try {
-          console.log('⭐ req.user:',req.user);
-          
+          console.log('⭐ req.user:',req);        
           res.status(200).json(req.user);
+
         } catch (error) {
           console.log("Error in checkAuth controller", error.message);
-          res.status(500).json({ message: "Internal Server Error" });
+          
+          res.status(500).json({ message: "Internal Server Error" });     
         }
       }
 }

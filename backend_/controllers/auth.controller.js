@@ -1,32 +1,57 @@
 const userHelper = require("../helpers/userHelper")
-const cloudinary = require("../lib/cloudinary")
+const User = require("../model/userModel")
 const  generateToken = require  ("../middlewares/jwtAuth");
 const bcrypt = require ('bcryptjs')
+const cloudinary  = require ('../lib/cloudinary')
+
 
 module.exports = {
     signup:async(req,res)=>{
-        try {
-            console.log(req.body,"user dataaaa");
-            await userHelper.userSignup(req.body).then((data)=>{
-                if (data.Exist) {
-                    res.json({message:' already registered!!'});
-                }else if (data.usercreated) {
-                    const UserData=data.usercreated
-                    console.log(UserData,'registered');
-                    res.json({status:true,message:"User registerd",UserData})
-                } else {
-                    res.json({status:false,UserData})
-                }
-            }).catch((error)=>{
-                res.json(400).json({message:"something went wrong!!"})
-            })
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({message:"internal server error!!"})
+      try {
+        if (!username || !email || !password) {
+          return res.status(400).json({ message: "All fields are required" });
         }
+    
+        if (password.length < 6) {
+          return res.status(400).json({ message: "Password must be at least 6 characters" });
+        }
+    
+        const user = await User.findOne({ email });
+    
+        if (user) return res.status(400).json({ message: "Email already exists" });
+    
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+    
+        const newUser = new User({
+          username,
+          email,
+          password: hashedPassword,
+        });
+    
+        if (newUser) {
+          // generate jwt token here
+          generateToken(newUser._id, res);
+          await newUser.save();
+    
+          res.status(201).json({
+            _id: newUser._id,
+            username: newUser.username,
+            email: newUser.email,
+            profilePic: newUser.profilePic,
+          });
+        } else {
+          res.status(400).json({ message: "Invalid user data" });
+        }
+      } catch (error) {
+        console.log("Error in signup controller", error.message);
+        res.status(500).json({ message: "Internal Server Error" });
+      }
     },
 
     login:async(req,res)=>{
+      console.log('user login auth.controller');
+  
         try {
             console.log("⭐this is login form data..req.body⭐",req.body,);
             const response = await userHelper.forLogin(req.body);

@@ -1,7 +1,7 @@
 const User = require("../model/userModel.js");
 const Message = require("../model/messageModel.js");
 const cloudinary = require("../lib/cloudinary.js");
-const { getReceiverSocketId } = require ("../lib/socket.js")
+const { getReceiverSocketId } = require ("../lib/socket")
 
 // Export the controller functions
 module.exports = {

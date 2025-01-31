@@ -2,8 +2,8 @@ import axios from "axios";
 import Cookies from "js-cookie"; // Ensure you have 'js-cookie' installed
 
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.MODE === "development" ? "http://localhost:5001/" : "/",
-  withCredentials: true, // Ensures cookies are sent with requests
+  baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:5001",
+  withCredentials: true,
 });
 
 // Attach token to every request
@@ -21,13 +21,13 @@ axiosInstance.interceptors.request.use(
 );
 
 // Handle Unauthorized Requests
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      console.log("Unauthorized, redirecting to login...");
-      window.location.href = "/login"; // Redirect to login page
-    }
-    return Promise.reject(error);
-  }
-);
+// axiosInstance.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     if (error.response?.status === 401) {
+//       console.log("Unauthorized, redirecting to login...");
+//       window.location.href = "/login"; // Redirect to login page
+//     }
+//     return Promise.reject(error);
+//   }
+// );

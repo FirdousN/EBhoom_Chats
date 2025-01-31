@@ -22,8 +22,8 @@ const { CloudinaryStorage } = require('multer-storage-cloudinary');
 // router.get("/check", protectRoute, checkAuth);
 router.get("/check", userController.checkAuth);
 
-//signup
-router.post("/signup",userController.signup);
+//POST signup
+router.post("/signup",authenticateToken.authenticateToken,userController.signup);
 
 //login
 router.post('/login',userController.login)
@@ -32,7 +32,7 @@ router.post('/login',userController.login)
 router.post("/logout",userController.logout)
 
 // updateProfile
-router.put('/update-profile',userController.protectRoute,userController.updateProfile)
+router.put('/update-profile',authenticateToken.authenticateToken,userController.protectRoute,userController.updateProfile)
 
 
 //profileUpdation

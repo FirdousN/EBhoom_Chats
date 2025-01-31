@@ -5,19 +5,21 @@ const cloudinary = require("../lib/cloudinary.js");
 
 // Export the controller functions
 module.exports = {
+
     getUserForSidebar: async (req, res) => {
-        console.log("⭐getUserForSidebar:", req.params);
+        console.log("⭐getUserForSidebar:", req.user);
 
         try {
-            if (!req.user || !req.user.userId) {
+            if (!req.user || !req.user._id) {
                 return res.status(401).json({ message: "Unauthorized: No user ID found" });
             }
-            const loggedInUserId = req.user.userId;
+            const loggedInUserId = req.user._id;
             // 
             console.log('00000loggedInUserId000000',loggedInUserId);
             
             const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
-
+            console.log('filteredUsers',filteredUsers);
+            
             res.status(200).json(filteredUsers);
         } catch (error) {
             console.error("Error in getUsersForSidebar: ", error.message);
@@ -30,7 +32,7 @@ module.exports = {
         try {
 
             const { id: userToChatId } = req.params;
-            const myId = req.user.userId;
+            const myId = req.user._id;
             console.log('⭐myId:', myId);
             console.log('⭐userToChatId:', userToChatId);
 
@@ -53,7 +55,7 @@ module.exports = {
         try {
             const { text, image } = req.body;
             const { id: receiverId } = req.params;
-            const senderId = req.user.userId;
+            const senderId = req.user._id;
 
             let imageUrl;
             if (image) {
@@ -87,4 +89,5 @@ module.exports = {
             res.status(500).json({ error: "Internal server error" });
         }
     },
+    
 };

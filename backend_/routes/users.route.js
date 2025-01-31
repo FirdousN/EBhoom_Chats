@@ -25,10 +25,10 @@ router.get("/check", userController.checkAuth);
 //POST signup
 router.post("/signup",authenticateToken.authenticateToken,userController.signup);
 
-//login
+//Post login
 router.post('/login',userController.login)
 
-// logOut
+//Post logOut
 router.post("/logout",userController.logout)
 
 // updateProfile

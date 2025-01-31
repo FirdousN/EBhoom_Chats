@@ -1,31 +1,18 @@
-const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
+const jwt = require ("jsonwebtoken");
 
-dotenv.config();
-
-// const jwt_token = process.env.SECRET_KEY 
-
-const jwt_token = process.env.JWT_SECRET || "default-secret-key";
-function authenticateToken(req, res, next) {
-  const token = req.header("Authorization");
-
-  if (!token) {
-    console.error("No token provided");
-    return res.status(401).json({ message: "No token provided" });
-  }
-
-  jwt.verify(token.split(" ")[1], jwt_token, (err, user) => {
-    if (err) {
-      console.error("Token verification failed:", err);
-      return res.status(403).json({ message: "Please login to continue" });
-    }
-
-    console.log("Decoded user:", user);
-    req.user = user;
-    next();
+  const generateToken = (userId, res) => {
+  const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
   });
-}
 
+  res.cookie("jwt", token, {
+    httpOnly: true, // prevent XSS attacks cross-site scripting attacks
+    maxAge: 7 * 24 * 60 * 60 * 1000, // MS
+    secure: process.env.NODE_ENV !== "development",
+    sameSite: "strict", // CSRF attacks cross-site request forgery attacks
+  });
 
+  return token;
+};
 
-module.exports = { authenticateToken };
+module.exports = { generateToken }

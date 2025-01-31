@@ -25,4 +25,4 @@ const signupSchema = new Schema(
     { timestamps: true }
   );
 
-module.exports = mongoose.model('users',signupSchema)
+  module.exports = mongoose.model('users',signupSchema)

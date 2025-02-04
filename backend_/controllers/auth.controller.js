@@ -190,7 +190,7 @@ module.exports = {
   //have some doubt in this code Pending to use
   addProfilePic: async (req, res) => {
     try {
-      console.log(req.file, "hiiiiiiiiiiiiiiii")
+      console.log('addProfilePic',req.file,)
       if (!req.file) {
         return res.status(400).json({ success: false, message: 'No file uploaded' });
       }

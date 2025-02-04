@@ -10,9 +10,12 @@ const cloudinary = require('cloudinary').v2;
 
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-app.get("/", (req, res) => {
-    res.send("Backend is running!");
-  });
+router.get("/", (req, res) => {
+    res.send("Ebhoom Chat's Api");  // Ensure 'send' instead of 'sent'
+    // Optional: If you want a JSON response as well:
+    // res.json({ message: "EBhoom Chat's Backend is running!" });
+});
+
 
 //GET checkAuth ::
 // router.get("/check", protectRoute, checkAuth);
@@ -25,7 +28,7 @@ router.post("/signup",signup);
 router.post('/login',login)
 
 //Post logOut ::
-router.post("/logout",logout)
+router.post("/logout",logout);
 
 // updateProfile::
 router.put('/update-profile',authenticateToken,protectRoute,updateProfile)

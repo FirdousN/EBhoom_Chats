@@ -20,14 +20,3 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error) // Handle errors gracefully
 );
 
-// Handle Unauthorized Requests
-// axiosInstance.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     if (error.response?.status === 401) {
-//       console.log("Unauthorized, redirecting to login...");
-//       window.location.href = "/login"; // Redirect to login page
-//     }
-//     return Promise.reject(error);
-//   }
-// );

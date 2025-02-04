@@ -53,55 +53,6 @@ module.exports = {
     }
   },
 
-  // login: async (req, res) => {
-  //   console.log('user login auth.controller');
-
-  //   try {
-  //     console.log("⭐this is login form data..req.body⭐", req.body,);
-
-  //     const response = await userHelper.forLogin(req.body);
-
-  //     console.log(response, "❤️this is response....");
-
-  //     if (response.login && response.userExist) {
-  //       const userData = response.userExist
-  //       const userId = response.userExist._id;
-  //       const username = response.userExist.username;
-
-  //       // Generate Token
-  //       const Token = await userHelper.createToken(userId.toString(), username);
-  //       console.log("⭐Token in auth.controller login::", Token,"⭐⬆️");
-
-  //       // // Create Refresh Token (longer expiration)
-  //       // const refreshToken = jwt.sign(
-  //       //   { userId, userName: username },
-  //       //   jwt_token,
-  //       //   { expiresIn: "7d" } // 7 days expiration for refresh token
-  //       // );
-
-  //       console.log("⭐Refresh Token::", refreshToken);
-
-  //       // Send token with cookie or response
-  //       res.cookie("jwt", Token, { httpOnly: true, secure: process.env.NODE_ENV === "production" });
-
-  //       res.json({
-  //         message: "user successfully loggedIn",
-  //         status: true,
-  //         userData,
-  //         Token, // Send access token
-  //         // refreshToken, //Send refresh token
-  //       });
-
-  //     } else {
-  //       res.json({ status: false, message: "user not registered!" })
-  //     }
-
-  //   } catch (error) {
-  //     console.log(error);
-  //     res.status(500).json({ message: "internal server error!!" })
-  //   }
-  // },
-
   login: async (req, res) => {
     const { email, password } = req.body;
     console.log('Login res::', res.body);

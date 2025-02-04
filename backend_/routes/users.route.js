@@ -10,12 +10,6 @@ const cloudinary = require('cloudinary').v2;
 
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-
-/* GET users listing. */
-// router.get('/', function(req, res, next) {
-//   res.send('respond with a resource');
-// });
-
 //GET checkAuth ::
 // router.get("/check", protectRoute, checkAuth);
 router.get("/check", protectRoute ,checkAuth);

@@ -10,7 +10,7 @@ const server = http.createServer(app);
 const io = new Server(server,
     // add cors
     cors({
-      origin:'http://localhost:5174', // Add multiple origins if needed
+      origin:'http://localhost:5173', // Add multiple origins if needed
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization'],
       credentials: true,

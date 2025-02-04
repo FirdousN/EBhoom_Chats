@@ -11,8 +11,9 @@ const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 router.get("/", (req, res) => {
-    res.send("Ebhoom Chat's Api");  // Ensure 'send' instead of 'sent'
-    // Optional: If you want a JSON response as well:
+    console.log('Ebhoom Chat Api is calling!');
+    
+    res.send("Ebhoom Chat's Api is calling!");  // Ensure 'send' instead of 'sent'
     // res.json({ message: "EBhoom Chat's Backend is running!" });
 });
 

@@ -4,16 +4,20 @@ import MessageInput from "./MessageInput";
 import useChatStore from "../store/useChatStore";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { useAuthStore } from "../store/useAuthStore";
-import { useState } from "react";
-// import { formatMessageTime } from "../lib/utils";
-    
+import { formatMessageTime } from "../lib/utils";
 
 const ChatContainer = () => {
-    const { messages, getMessages, isMessagesLoading, selectedUser } = useChatStore();
+    const { messages, getMessages, isMessagesLoading, selectedUser, subscribeToMessages, unsubscribeFromMessages } =
+        useChatStore();
+
     const { authUser } = useAuthStore();
 
     useEffect(() => {
         getMessages(selectedUser._id);
+
+        subscribeToMessages();
+
+        return () => unsubscribeFromMessages();
     }, [selectedUser._id, getMessages]);
 
     if (isMessagesLoading) {
@@ -34,10 +38,7 @@ const ChatContainer = () => {
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {messages.map((msg) => {
                     return (
-                        <div
-                            key={msg._id}
-                            className={`chat ${msg.senderId === authUser._id ? "chat-end" : "chat-start"}`}
-                        >
+                        <div key={msg._id} className={`chat ${msg.senderId === authUser._id ? "chat-end" : "chat-start"}`}>
                             <div className="chat-image avatar">
                                 <div className="size-10 rounded-full border">
                                     <img
@@ -53,11 +54,10 @@ const ChatContainer = () => {
 
                             {/*  */}
                             <div>
-                               { msg.txt}
+                                {msg.txt}
                                 <div className="chat-header mb-1">
                                     {/* <time className="text-xs opacity-50 ml-1">{(msg.createdAt)}</time> */}
-                                    <time className="text-xs opacity-50 ml-1">{(msg.createdAt)}</time>
-                                
+                                    <time className="text-xs opacity-50 ml-1">{msg.createdAt}</time>
                                 </div>
                                 <div className="chat-bubble flex flex-col">
                                     {msg.image && (

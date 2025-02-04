@@ -35,7 +35,8 @@ const App = () => {
         );
 
     return (
-        <div data-theme="light">
+        // <div data-theme={theme}>
+        <div data-theme={theme}>
             <Navbar />
             
             <Routes>

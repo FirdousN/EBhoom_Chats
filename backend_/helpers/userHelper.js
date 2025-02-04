@@ -78,9 +78,9 @@ module.exports = {
       const findUser = await User.findOne({ _id: Id });
       console.log( "⭐FindUser ::", findUser);
       if (findUser) {
-        return { notfind: false }, findUser;
+        return { notFind: false }, findUser;
       } else {
-        return { notfind: true };
+        return { notFind: true };
       }
     } catch (error) {
       console.log(error);

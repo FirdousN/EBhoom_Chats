@@ -1,9 +1,9 @@
 {
-  "name": "my-express-app",
+  "name": "backend_",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www.js"
+    "start": "nodemon ./app.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

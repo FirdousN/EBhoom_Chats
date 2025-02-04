@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const userController = require("../controllers/auth.controller")
-const authenticateToken = require("../middlewares/jwtAuth")
-const protectRoute = require ("../middlewares/auth.middleware")
+const { checkAuth, signup, login, logout, updateProfile, editProfile } = require("../controllers/auth.controller")
+const {authenticateToken} = require("../middlewares/jwtAuth")
+const {protectRoute} = require ("../middlewares/auth.middleware")
 
 // const { memoryStorage } = require('multer');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
-
 
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
@@ -17,69 +16,65 @@ const { CloudinaryStorage } = require('multer-storage-cloudinary');
 //   res.send('respond with a resource');
 // });
 
-//GET checkAuth 
-
+//GET checkAuth ::
 // router.get("/check", protectRoute, checkAuth);
-router.get("/check", userController.checkAuth);
+router.get("/check", protectRoute ,checkAuth);
 
-//POST signup
-router.post("/signup",authenticateToken.authenticateToken,userController.signup);
+//POST signup ::
+router.post("/signup",signup);
 
-//Post login
-router.post('/login',userController.login)
+//Post login ::
+router.post('/login',login)
 
-//Post logOut
-router.post("/logout",userController.logout)
+//Post logOut ::
+router.post("/logout",logout)
 
-// updateProfile
-router.put('/update-profile',authenticateToken.authenticateToken,userController.protectRoute,userController.updateProfile)
+// updateProfile::
+router.put('/update-profile',authenticateToken,protectRoute,updateProfile)
 
+//edit user profile::
+router.put('/edit_my_profile/:id',authenticateToken,editProfile)
 
-//profileUpdation
-// router.get('/',authenticateToken.authenticateToken,userController.getProfile)
-
-//edit user profile
-router.put('/edit_my_profile/:id',authenticateToken.authenticateToken,userController.editProfile)
-
+//profileUpdation 
+// router.get('/',authenticateToken,getProfile)
 
 //add profile pic
-console.log("Cloudinary Config:", cloudinary.config());
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: 'profile_pics',
-    allowed_formats: ['jpg', 'png', 'jpeg'],
-  },
-});
+// console.log("Cloudinary Config:", cloudinary.config());
+// const storage = new CloudinaryStorage({
+//   cloudinary,
+//   params: {
+//     folder: 'profile_pics',
+//     allowed_formats: ['jpg', 'png', 'jpeg'],
+//   },
+// });
 
 // multer upload pic
-const upload = multer({
-  storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
-});
+// const upload = multer({
+//   storage,
+//   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+// });
 
+// router.post('/add_profile_photo/:id', upload.single('profilePic'), async (req, res) => {
+//   try {
+//     if (!req.file) {
+//       return res.status(400).json({ success: false, message: "No file uploaded." });
+//     }
 
-router.post('/add_profile_photo/:id', upload.single('profilePic'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ success: false, message: "No file uploaded." });
-    }
+//     console.log("File received:", req.file);
 
-    console.log("File received:", req.file);
+//     // Upload file to Cloudinary
+//     const result = await cloudinary.uploader.upload(req.file.path, {
+//       folder: 'profile_pics',
+//     });
 
-    // Upload file to Cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: 'profile_pics',
-    });
+//     console.log("Cloudinary Upload Success:", result);
 
-    console.log("Cloudinary Upload Success:", result);
-
-    res.json({ success: true, message: "Profile photo uploaded successfully", data: result });
-  } catch (error) {
-    console.error("Upload Error:", error);
-    res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
-  }
-});
+//     res.json({ success: true, message: "Profile photo uploaded successfully", data: result });
+//   } catch (error) {
+//     console.error("Upload Error:", error);
+//     res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
+//   }
+// });
 
 // router.post('/add_profile_photo/:id',upload.single('profilePic'),userController.addProfilePic)
 

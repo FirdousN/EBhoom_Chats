@@ -10,6 +10,8 @@ module.exports = {
 
   signup: async (req, res) => {
     try {
+      // console.log('⭐Signup res::', res.body,'⭐Signup res::');
+      const { username, email, password } = req.body
       if (!username || !email || !password) {
         return res.status(400).json({ message: "All fields are required" });
       }
@@ -102,10 +104,11 @@ module.exports = {
 
   login: async (req, res) => {
     const { email, password } = req.body;
+    console.log('Login res::', res.body);
+
     try {
       const user = await User.findOne({ email });
-      console.log("user 00000000000",user,"user 00000000000");
-      
+      console.log("⭐user::", user);
 
       if (!user) {
         return res.status(400).json({ message: "Invalid credentials" });
@@ -134,22 +137,26 @@ module.exports = {
 
   logout: async (req, res) => {
     try {
-      res.cookie("jwt", "", { maxAge: 0 });
+      // console.log("userController");
+
+      res.setHeader("Clear-Site-Data", '"cookies", "storage"');
+      res.cookie("jwt", "", { httpOnly: true, secure: true, sameSite: "strict", maxAge: 0 });
       res.status(200).json({ message: "Logged out successfully" })
     } catch (error) {
-
+      console.log("Error in logout controller", error.message);
+      res.status(500).json({ message: "Internal Server Error" });
     }
   },
 
   getProfile: async (req, res) => {
     try {
-      console.log(req.params.id, "⭐iiiiiiiiiiiiiiiiiiiddd");
-      const Getuser = await userHelper.getOneUser(req.params.id);
-      console.log(Getuser, "enter into conroller");
-      if (Getuser.error || Getuser.notfind) {
+      // console.log( "⭐getProfile || id::",req.params.id );
+      const getUser = await userHelper.getOneUser(req.params.id);
+      // console.log(getUser, "enter into controller");
+      if (getUser.error || getUser.notFind) {
         res.json({ message: "User not found" });
       } else {
-        res.status(200).json({ Getuser });
+        res.status(200).json({ getUser });
       }
     } catch (error) {
       console.log(error);
@@ -251,12 +258,11 @@ module.exports = {
   // CheckAuth
   checkAuth: (req, res) => {
     try {
-      console.log('⭐ req.user:', req);
+      console.log('⭐ req.user:', req.user);
       res.status(200).json(req.user);
 
     } catch (error) {
       console.log("Error in checkAuth controller", error.message);
-
       res.status(500).json({ message: "Internal Server Error" });
     }
   }

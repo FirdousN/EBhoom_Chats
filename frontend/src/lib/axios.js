@@ -3,6 +3,8 @@ import Cookies from "js-cookie"; // Ensure you have 'js-cookie' installed
 
 export const axiosInstance = axios.create({
   baseURL: import.meta.env.MODE === "development" ? "http://localhost:5001/" : "/",
+  // baseURL: import.meta.env.MODE === "development" ? "https://ebhoom-chats-backend.vercel.app/" : "/",
+  
   withCredentials: true, // Ensures cookies are sent with requests
 });
 

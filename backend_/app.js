@@ -17,7 +17,7 @@ db();  // Make sure you are calling the function here to establish the connectio
 
 // add cors
 app.use(cors({
-  origin: 'http://localhost:5174', // Add multiple origins if needed
+  origin: process.env.CLIENT_ORIGIN, // Add multiple origins if needed
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -64,7 +64,7 @@ app.use((err, req, res, next) => {
 });
 
 // Create HTTP server and initialize socket
-server.listen(PORT || 3000, () => {
+server.listen( PORT, () => {
   console.log(`App started on PORT ${server.address().port}`);
 })
 

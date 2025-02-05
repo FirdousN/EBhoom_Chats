@@ -26,16 +26,16 @@ router.get("/check", protectRoute ,checkAuth);
 router.post("/signup",signup);
 
 //Post login ::
-router.post('/login',login)
+router.post("/login",login)
 
 //Post logOut ::
 router.post("/logout",logout);
 
 // updateProfile::
-router.put('/update-profile',authenticateToken,protectRoute,updateProfile)
+router.put("/update-profile",authenticateToken,protectRoute,updateProfile)
 
 //edit user profile::
-router.put('/edit_my_profile/:id',authenticateToken,editProfile)
+router.put("/edit_my_profile/:id",authenticateToken,editProfile)
 
 //profileUpdation 
 // router.get('/',authenticateToken,getProfile)
